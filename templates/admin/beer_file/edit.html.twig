@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% set title = "Modifier une fiche" %}
+{% block header %}
+    <div class="row justify-content-end">
+        <a href="{{ path('beer_file_index') }}" class="btn btn-primary">Retour</a>
+        <a href="{{ path('beer_file_files_index', {id: beer_file.id}) }}" class="btn btn-warning">Les images</a>
+        {{ include('admin/beer_file/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+{% block body %}
+    {{ include('admin/beer_file/_update_form.html.twig', {'button_label': 'Modifier'}) }}
+{% endblock %}

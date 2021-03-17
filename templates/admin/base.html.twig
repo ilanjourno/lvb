@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0"/>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>{{app.user.getUsername() is defined ? "Bienvenue sur l'intranet " ~ app.user.getUsername() : "Laurent verre à bierre"}}</title>
+        <link rel="stylesheet" type="text/css" href="{{asset('css/datatables.min.css?ver=' ~ app_version)}}"/>
+        <link href="{{ asset('argon') }}/img/brand/logo.png" rel="icon" type="image/png">
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <!-- Icons -->
+        <link href="{{ asset('argon/vendor/nucleo/css/nucleo.css?ver=' ~ app_version) }}" rel="stylesheet">
+        <link href="{{ asset('argon/vendor/@fortawesome/fontawesome-free/css/all.min.css?ver=' ~ app_version) }}" rel="stylesheet">
+        <!-- Argon CSS -->
+        <link type="text/css" href="{{ asset('argon/css/argon.css?ver=' ~ app_version) }}" rel="stylesheet">
+        {# <link href="{{asset('font-awesome/css/all.min.css?ver=' ~ app_version)}}" rel="stylesheet"> #}
+        {# <link href="{{asset('assets/js/plugins/semantic/semantic.css?ver=' ~ app_version)}}"
+         rel="stylesheet"> #}
+        {{ encore_entry_link_tags('app') }}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body class="{{bodyClass ?? ''}}">
+        {# {% if app.user %} #}
+        {% include 'admin/layouts/sidebar.html.twig' %}
+        <div class="main-content">
+            <div class="main-panel d-flex flex-column" style="min-height:100vh;">
+                {% include 'admin/layouts/navbar.html.twig' %}                 
+                {% include "admin/layouts/header.html.twig" %}
+                <div class="container-fluid mt--7">
+                    <div class="row">
+                        <div class="col order-xl-1">
+                            <div class="card">
+                                <div class="card-header">                                    
+                                    <div class="row">
+                                        <div class="col">
+                                            {% for message in app.flashes('success') %}
+                                                <div class="alert alert-success">
+                                                    {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                            {% for message in app.flashes('error') %}
+                                                <div class="alert alert-danger">
+                                                    {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h1>{{title ?? '' }}</h1>
+                                            {% if require is defined %}
+                                                    <span class="text-danger">* </span>
+                                                    champ(s) obligatoire(s)
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            {% block header %}{% endblock %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    {% if datatable is defined %}
+                                        <div id="table">Chargement...</div>
+                                    {% endif %}
+                                    {% block body %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'admin/layouts/footer.html.twig' %}
+            </div>
+        </div>
+            {# {% include "notifications.html.twig" %} #}
+        {# {% else %}
+            {% block content %}{% endblock %}
+        {% endif %} #}
+
+        {{ encore_entry_script_tags('app') }}
+        <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js?ver={{app_version}}"></script>
+        {% if datatable is defined%} 
+            <script type="text/javascript" src="{{asset('js/datatables.min.js?ver=' ~ app_version)}}"></script>
+            <script src="{{ asset('bundles/datatables/js/datatables.js?ver=' ~ app_version)}}"></script>
+            <script>
+                $(function() {
+                    $('#table').initDataTables({{ datatable_settings(datatable) }}, {
+                        responsive: true,
+                        columnDefs: [
+                            {width: "5%", targets: -1},
+                            {width: "5%", targets: 0},
+                        ]
+                    });
+                });
+            </script>
+        {% endif %}
+        <!-- Argon JS -->
+        <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js?ver="{{app_version}}></script>
+        <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js?ver={{app_version}}"></script>
+        {# <script>
+            document.querySelectorAll('.autosize').forEach(element => autosize(element))
+        </script>
+        <script src="{{asset('assets/js/plugins/semantic/semantic.js?ver=' ~ app_version)}}"></script> #}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

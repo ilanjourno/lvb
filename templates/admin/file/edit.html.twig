@@ -1,0 +1,13 @@
+{% extends "admin/base.html.twig" %}
+
+{% set title = "Modifier une image" %}
+{% set require = true %}
+{% block header %}
+    <div class="row justify-content-end">
+        <a href="{{ path('beer_file_files_index', {'id': file.beerFile.id}) }}" class="btn btn-primary">Retour</a>
+        {{ include('admin/file/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+{% block body %}
+    {{ include('admin/file/_form.html.twig', {'button_label': 'Modifier'}) }}
+{% endblock %}

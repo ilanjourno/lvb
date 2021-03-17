@@ -1,0 +1,46 @@
+{% extends "admin/base.html.twig" %}
+
+{% set title = "Une image" %}
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th># :</th>
+                <td>{{ file.id }}</td>
+            </tr>
+            <tr>
+                <th>Aperçu :</th>
+                <td>
+                    <embed src="/uploads/files/{{file.name}}" width="200px"/>
+                </td>
+            </tr>
+            <tr>
+                <th>Nom :</th>
+                <td>{{ file.name }}</td>
+            </tr>
+            <tr>
+                <th>Créer le :</th>
+                <td>{{ file.createdAt ? file.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Modifier le :</th>
+                <td>{{ file.updatedAt ? file.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+    <div class="col mt-4">
+        <div class="row">
+            <a href="/uploads/files/{{file.name}}" class="btn btn-info">Regarder</a>
+            <a href="/uploads/files/{{file.name}}" class="btn btn-success" download="{{file.name}}">Télécharger</a>
+            <button onclick="printJS('/uploads/files/{{file.name}}', {{file.name|split('.')|last == 'pdf' ? '' : "'image'"}})" class="btn btn-warning">Imprimer</button>
+            <a href="{{ path('file_edit', {'id': file.id}) }}" class="btn btn-primary">Modifier</a>
+            {{ include('admin/file/_delete_form.html.twig') }}
+        </div>
+    </div>
+    
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.5.0/print.min.js" integrity="sha512-lzGE9ZqdrztBEk1wtq4O60N3WbsTlIvvm6ULCxWRt+CwpRD4WUbgC5aatbtourCUC15PJpqcpZk3VLs12vpNoA==" crossorigin="anonymous"></script>
+{% endblock %}

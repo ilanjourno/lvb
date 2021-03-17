@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.district) }}
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <ul id="files-fields-list"
+                    data-prototype="{{ form_widget(form.files.vars.prototype)|e }}"
+                    data-widget-tags="{{ '<li class="list-group-item mb-2"></li>'|e }}"
+                    data-widget-counter="{{ form.files|length }}">
+                </ul>
+                <button type="button"
+                    class="add-another-collection-widget btn btn-primary"
+                    data-list-selector="#files-fields-list">
+                    Ajouter une photo
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-success">{{ button_label|default('Ajouter') }}</button>
+{{ form_end(form) }}
+
